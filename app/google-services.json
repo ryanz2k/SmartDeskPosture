@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "331132159785",
+    "firebase_url": "https://smart-desk-posture-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "smart-desk-posture",
+    "storage_bucket": "smart-desk-posture.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:331132159785:android:5717adf4bbcff5aab11938",
+        "android_client_info": {
+          "package_name": "com.eldroid.smartdeskposture"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3Q0sLrhKz-2Ac5Bg6XByxvqwdVKLsa-Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

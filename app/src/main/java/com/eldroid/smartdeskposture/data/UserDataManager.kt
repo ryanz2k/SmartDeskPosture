@@ -3,6 +3,9 @@ package com.eldroid.smartdeskposture.data
 import android.content.Context
 import android.content.SharedPreferences
 import com.eldroid.smartdeskposture.model.User
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 object UserDataManager {
     
@@ -22,6 +25,11 @@ object UserDataManager {
     fun saveUser(user: User) {
         currentUser = user
         saveUserToPreferences(user)
+        
+        // Save to Firebase Database
+        CoroutineScope(Dispatchers.IO).launch {
+            FirebaseDatabaseService.saveUser(user)
+        }
     }
     
     fun getCurrentUser(): User? {
@@ -29,12 +37,13 @@ object UserDataManager {
     }
     
     fun isUserLoggedIn(): Boolean {
-        return currentUser != null
+        return FirebaseAuthService.isUserLoggedIn() && currentUser != null
     }
     
     fun clearUser() {
         currentUser = null
         clearUserFromPreferences()
+        FirebaseAuthService.signOut()
     }
     
     private fun saveUserToPreferences(user: User) {
@@ -62,5 +71,11 @@ object UserDataManager {
     
     private fun clearUserFromPreferences() {
         sharedPreferences.edit().clear().apply()
+    }
+
+    suspend fun saveCurrentUser(updatedUser: User) {
+        currentUser = updatedUser
+        saveUserToPreferences(updatedUser)
+        FirebaseDatabaseService.updateUser(updatedUser)
     }
 }

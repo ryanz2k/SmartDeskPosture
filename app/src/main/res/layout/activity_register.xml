@@ -6,15 +6,26 @@
     android:padding="24dp"
     android:gravity="center">
 
+    <!-- Title -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Smart Desk Posture"
+        android:text="Smart Desk Posture Reminder"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:layout_marginBottom="32dp"
+        android:layout_marginBottom="8dp"
         android:textColor="@android:color/black" />
 
+    <!-- Subtitle -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Join Smart Desk Posture to start monitoring your posture"
+        android:textSize="14sp"
+        android:textColor="@android:color/darker_gray"
+        android:layout_marginBottom="24dp" />
+
+    <!-- Register Label -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -24,6 +35,7 @@
         android:layout_marginBottom="24dp"
         android:textColor="@android:color/black" />
 
+    <!-- Full Name -->
     <EditText
         android:id="@+id/nameEditText"
         android:layout_width="match_parent"
@@ -36,6 +48,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp" />
 
+    <!-- Email -->
     <EditText
         android:id="@+id/emailEditText"
         android:layout_width="match_parent"
@@ -48,6 +61,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp" />
 
+    <!-- Password -->
     <EditText
         android:id="@+id/passwordEditText"
         android:layout_width="match_parent"
@@ -60,6 +74,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp" />
 
+    <!-- Confirm Password -->
     <EditText
         android:id="@+id/confirmPasswordEditText"
         android:layout_width="match_parent"
@@ -72,6 +87,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp" />
 
+    <!-- Register Button -->
     <Button
         android:id="@+id/registerButton"
         android:layout_width="match_parent"
@@ -82,6 +98,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp" />
 
+    <!-- Progress Bar -->
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
@@ -89,6 +106,7 @@
         android:visibility="gone"
         android:layout_marginBottom="16dp" />
 
+    <!-- Login Link -->
     <TextView
         android:id="@+id/loginLink"
         android:layout_width="wrap_content"

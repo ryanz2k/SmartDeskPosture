@@ -14,11 +14,12 @@ import com.eldroid.smartdeskposture.presenter.RegisterPresenter
 import com.eldroid.smartdeskposture.presenter.RegisterPresenterImpl
 import com.eldroid.smartdeskposture.view.RegisterView
 import com.eldroid.smartdeskposture.data.UserDataManager
+import com.eldroid.smartdeskposture.view.MainActivity
 
 class RegisterActivity : AppCompatActivity(), RegisterView {
-    
+
     private lateinit var presenter: RegisterPresenter
-    
+
     private lateinit var nameEditText: EditText
     private lateinit var emailEditText: EditText
     private lateinit var passwordEditText: EditText
@@ -26,16 +27,16 @@ class RegisterActivity : AppCompatActivity(), RegisterView {
     private lateinit var registerButton: Button
     private lateinit var loginLink: TextView
     private lateinit var progressBar: ProgressBar
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
-        
+
         presenter = RegisterPresenterImpl(this)
         initializeViews()
         setupListeners()
     }
-    
+
     private fun initializeViews() {
         nameEditText = findViewById(R.id.nameEditText)
         emailEditText = findViewById(R.id.emailEditText)
@@ -45,7 +46,7 @@ class RegisterActivity : AppCompatActivity(), RegisterView {
         loginLink = findViewById(R.id.loginLink)
         progressBar = findViewById(R.id.progressBar)
     }
-    
+
     private fun setupListeners() {
         registerButton.setOnClickListener {
             val name = nameEditText.text.toString().trim()
@@ -54,52 +55,55 @@ class RegisterActivity : AppCompatActivity(), RegisterView {
             val confirmPassword = confirmPasswordEditText.text.toString().trim()
             presenter.register(name, email, password, confirmPassword)
         }
-        
+
         loginLink.setOnClickListener {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         }
     }
-    
+
     override fun showLoading() {
         progressBar.visibility = View.VISIBLE
         registerButton.isEnabled = false
     }
-    
+
     override fun hideLoading() {
         progressBar.visibility = View.GONE
         registerButton.isEnabled = true
     }
-    
+
     override fun showNameError(message: String) {
         nameEditText.error = message
     }
-    
+
     override fun showEmailError(message: String) {
         emailEditText.error = message
     }
-    
+
     override fun showPasswordError(message: String) {
         passwordEditText.error = message
     }
-    
+
     override fun showConfirmPasswordError(message: String) {
         confirmPasswordEditText.error = message
     }
-    
+
     override fun clearErrors() {
         nameEditText.error = null
         emailEditText.error = null
         passwordEditText.error = null
         confirmPasswordEditText.error = null
     }
-    
+
     override fun onRegistrationSuccess(user: User) {
         Toast.makeText(this, "Registration successful! Welcome ${user.name}", Toast.LENGTH_SHORT).show()
-        startActivity(Intent(this, HomeActivity::class.java))
+        // Navigate to MainActivity (which displays HomeFragment by default)
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
         finish()
     }
-    
+
     override fun onRegistrationError(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }

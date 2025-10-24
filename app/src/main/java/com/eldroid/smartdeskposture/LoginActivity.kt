@@ -13,27 +13,27 @@ import com.eldroid.smartdeskposture.model.User
 import com.eldroid.smartdeskposture.presenter.LoginPresenter
 import com.eldroid.smartdeskposture.presenter.LoginPresenterImpl
 import com.eldroid.smartdeskposture.view.LoginView
-import com.eldroid.smartdeskposture.data.UserDataManager
+import com.eldroid.smartdeskposture.view.MainActivity   // ✅ Add this import
 
 class LoginActivity : AppCompatActivity(), LoginView {
-    
+
     private lateinit var presenter: LoginPresenter
-    
+
     private lateinit var emailEditText: EditText
     private lateinit var passwordEditText: EditText
     private lateinit var loginButton: Button
     private lateinit var registerLink: TextView
     private lateinit var progressBar: ProgressBar
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-        
+
         presenter = LoginPresenterImpl(this)
         initializeViews()
         setupListeners()
     }
-    
+
     private fun initializeViews() {
         emailEditText = findViewById(R.id.emailEditText)
         passwordEditText = findViewById(R.id.passwordEditText)
@@ -41,48 +41,55 @@ class LoginActivity : AppCompatActivity(), LoginView {
         registerLink = findViewById(R.id.registerLink)
         progressBar = findViewById(R.id.progressBar)
     }
-    
+
     private fun setupListeners() {
         loginButton.setOnClickListener {
             val email = emailEditText.text.toString().trim()
             val password = passwordEditText.text.toString().trim()
             presenter.login(email, password)
         }
-        
+
         registerLink.setOnClickListener {
+            // Go to RegisterActivity
             startActivity(Intent(this, RegisterActivity::class.java))
+            finish() // Optional: close LoginActivity when registering
         }
     }
-    
+
     override fun showLoading() {
         progressBar.visibility = View.VISIBLE
         loginButton.isEnabled = false
     }
-    
+
     override fun hideLoading() {
         progressBar.visibility = View.GONE
         loginButton.isEnabled = true
     }
-    
+
     override fun showEmailError(message: String) {
         emailEditText.error = message
     }
-    
+
     override fun showPasswordError(message: String) {
         passwordEditText.error = message
     }
-    
+
     override fun clearErrors() {
         emailEditText.error = null
         passwordEditText.error = null
     }
-    
+
     override fun onLoginSuccess(user: User) {
         Toast.makeText(this, "Login successful! Welcome ${user.name}", Toast.LENGTH_SHORT).show()
-        startActivity(Intent(this, HomeActivity::class.java))
+
+        // ✅ Navigate to MainActivity (which hosts HomeFragment)
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("user_name", user.name)
+        intent.putExtra("user_email", user.email)
+        startActivity(intent)
         finish()
     }
-    
+
     override fun onLoginError(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
     }

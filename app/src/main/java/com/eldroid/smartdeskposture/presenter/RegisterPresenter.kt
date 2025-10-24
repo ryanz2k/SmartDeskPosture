@@ -3,6 +3,11 @@ package com.eldroid.smartdeskposture.presenter
 import com.eldroid.smartdeskposture.model.User
 import com.eldroid.smartdeskposture.view.RegisterView
 import com.eldroid.smartdeskposture.data.UserDataManager
+import com.eldroid.smartdeskposture.data.FirebaseAuthService
+import com.eldroid.smartdeskposture.data.FirebaseDatabaseService
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 interface RegisterPresenter {
     fun register(name: String, email: String, password: String, confirmPassword: String)
@@ -15,20 +20,68 @@ class RegisterPresenterImpl(private val view: RegisterView) : RegisterPresenter 
         if (validateInput(name, email, password, confirmPassword)) {
             view.showLoading()
             
-            // Simulate registration process
-            val user = User(
-                id = System.currentTimeMillis().toString(),
-                name = name,
-                email = email,
-                password = password
-            )
-            
-            // Save user data temporarily
-            UserDataManager.saveUser(user)
-            
-            // Mock successful registration
-            view.onRegistrationSuccess(user)
-            view.hideLoading()
+            CoroutineScope(Dispatchers.IO).launch {
+                try {
+                    // First, create the user with Firebase Authentication
+                    val authResult = FirebaseAuthService.createUserWithEmailAndPassword(email, password)
+                    
+                    authResult.fold(
+                        onSuccess = { firebaseUser ->
+                            // Update the user profile with display name
+                            val profileResult = FirebaseAuthService.updateUserProfile(name)
+                            
+                            profileResult.fold(
+                                onSuccess = {
+                                    // Create user object for database
+                                    val user = User(
+                                        id = firebaseUser.uid,
+                                        name = name,
+                                        email = email
+                                    )
+                                    
+                                    // Save user to Firebase Database
+                                    val dbResult = FirebaseDatabaseService.saveUser(user)
+                                    
+                                    dbResult.fold(
+                                        onSuccess = {
+                                            // Save user data locally
+                                            UserDataManager.saveUser(user)
+                                            
+                                            CoroutineScope(Dispatchers.Main).launch {
+                                                view.onRegistrationSuccess(user)
+                                                view.hideLoading()
+                                            }
+                                        },
+                                        onFailure = { exception ->
+                                            CoroutineScope(Dispatchers.Main).launch {
+                                                view.onRegistrationError("Failed to save user data: ${exception.message}")
+                                                view.hideLoading()
+                                            }
+                                        }
+                                    )
+                                },
+                                onFailure = { exception ->
+                                    CoroutineScope(Dispatchers.Main).launch {
+                                        view.onRegistrationError("Failed to update profile: ${exception.message}")
+                                        view.hideLoading()
+                                    }
+                                }
+                            )
+                        },
+                        onFailure = { exception ->
+                            CoroutineScope(Dispatchers.Main).launch {
+                                view.onRegistrationError(FirebaseAuthService.getErrorMessage(exception as Exception))
+                                view.hideLoading()
+                            }
+                        }
+                    )
+                } catch (e: Exception) {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        view.onRegistrationError("An unexpected error occurred: ${e.message}")
+                        view.hideLoading()
+                    }
+                }
+            }
         }
     }
     

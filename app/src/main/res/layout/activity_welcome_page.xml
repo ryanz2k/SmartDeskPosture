@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".WelcomePageActivity">
+
+    <!-- Top Illustration -->
+    <ImageView
+        android:id="@+id/imgIllustration"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/ic_desk_posture"
+        android:contentDescription="@string/app_name"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="80dp" />
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Smart Desk Posture"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/imgIllustration"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp"/>
+
+    <!-- Subtitle (Reminder in purple) -->
+    <TextView
+        android:id="@+id/txtSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reminder"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@color/purple_500"
+        app:layout_constraintTop_toBottomOf="@id/txtTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Description -->
+    <TextView
+        android:id="@+id/txtDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Monitor your sitting posture in real-time with our IoT-powered system. Get gentle reminders to maintain good posture and track your progress over time"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:lineSpacingExtra="2dp"
+        android:textColor="@color/dark_gray"
+        app:layout_constraintTop_toBottomOf="@id/txtSubtitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginTop="12dp"/>
+
+    <!-- Create Account Button -->
+    <Button
+        android:id="@+id/btnCreateAccount"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:text="Create Account"
+        android:textColor="@color/white"
+        android:background="@drawable/btn_purple_background"
+        app:layout_constraintTop_toBottomOf="@id/txtDescription"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="40dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"/>
+
+    <!-- Sign In Button -->
+    <Button
+        android:id="@+id/btnSignIn"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:text="Sign In"
+        android:textColor="@color/black"
+        android:background="@drawable/btn_outline_background"
+        app:layout_constraintTop_toBottomOf="@id/btnCreateAccount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
